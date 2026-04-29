@@ -14,7 +14,7 @@ const s3Client = new S3Client({
   },
 });
 
-export const bufferToFile = (buffer: Buffer) =>
+export const bufferToFile = async (buffer: Buffer) =>
   `data:image/webp;base64,${buffer.toString("base64")}`;
 
 export const uploadImage = async (params: PutObjectCommandInput) => {
