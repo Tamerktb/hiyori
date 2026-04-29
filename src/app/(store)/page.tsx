@@ -278,7 +278,82 @@ export default function Home() {
           ))}
         </div>
       </section>
+      {/* HOW IT WORKS */}
+      <section style={{ padding:"40px 5% 60px", maxWidth:1100, margin:"0 auto" }}>
+        <div style={{ textAlign:"center", marginBottom:44 }}>
+          <h2 style={{ fontSize:"clamp(26px,5vw,46px)", fontWeight:900, marginBottom:10 }}>🔄 كيف نشتغل</h2>
+          <p style={{ color:"#ffffff55", fontSize:16 }}>4 خطوات بسيطة وبتستلم شحنك بدقائق</p>
+        </div>
+        <div className="grid4">
+          {[
+            { n:"1", icon:"🎮", title:"اختر المنتج", desc:"اضغط على المنتج اللي بدك إياه" },
+            { n:"2", icon:"💬", title:"تواصل واتساب", desc:"بنرد عليك فوراً ونأكد الطلب" },
+            { n:"3", icon:"💳", title:"ادفع بأمان", desc:"زين كاش، أورنج موني، أو حوالة بنكية" },
+            { n:"4", icon:"⚡", title:"استلم الكود", desc:"الكود بيوصلك على الواتساب فوراً" },
+          ].map(s => (
+            <div key={s.n} className="feat-card" style={{ position:"relative" }}>
+              <div style={{
+                position:"absolute", top:-12, right:-12,
+                width:38, height:38, borderRadius:"50%",
+                background:"linear-gradient(135deg,#f5a623,#ff4d4d)",
+                display:"flex", alignItems:"center", justifyContent:"center",
+                fontWeight:900, fontSize:16, color:"#000",
+              }}>{s.n}</div>
+              <div style={{ fontSize:36, marginBottom:10 }}>{s.icon}</div>
+              <div style={{ fontSize:16, fontWeight:900, marginBottom:6 }}>{s.title}</div>
+              <div style={{ fontSize:13, color:"#ffffff55" }}>{s.desc}</div>
+            </div>
+          ))}
+        </div>
+      </section>
 
+      {/* WHY TRUST US */}
+      <section style={{ padding:"40px 5% 60px", maxWidth:1100, margin:"0 auto" }}>
+        <div style={{ textAlign:"center", marginBottom:44 }}>
+          <h2 style={{ fontSize:"clamp(26px,5vw,46px)", fontWeight:900, marginBottom:10 }}>✨ ليش تثق فينا</h2>
+        </div>
+        <div className="grid3">
+          {[
+            { icon:"📘", title:"صفحة فيسبوك نشطة", desc:"شوف تقييمات الزبائن وآرائهم", link:"https://www.facebook.com/share/1App5Bfp2S/" },
+            { icon:"💬", title:"دعم فني 24/7", desc:"موجودين دائماً على الواتساب", link:"https://wa.me/962781367709" },
+            { icon:"🇯🇴", title:"محل أردني محلي", desc:"الزرقاء، الأردن • نخدم زبائننا بفخر", link:null },
+          ].map((b,i) => (
+            <a key={i} href={b.link || "#"} target={b.link ? "_blank" : "_self"} rel="noreferrer"
+              className="feat-card" style={{ textDecoration:"none", color:"inherit", display:"block" }}>
+              <div style={{ fontSize:42, marginBottom:14 }}>{b.icon}</div>
+              <div style={{ fontSize:17, fontWeight:900, marginBottom:8 }}>{b.title}</div>
+              <div style={{ fontSize:13, color:"#ffffff66" }}>{b.desc}</div>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section style={{ padding:"40px 5% 60px", maxWidth:900, margin:"0 auto" }}>
+        <div style={{ textAlign:"center", marginBottom:44 }}>
+          <h2 style={{ fontSize:"clamp(26px,5vw,46px)", fontWeight:900, marginBottom:10 }}>❓ أسئلة شائعة</h2>
+        </div>
+        {[
+          { q:"كيف أعرف إنكم محل موثوق؟", a:"إحنا محل أردني من الزرقاء، صفحتنا على الفيسبوك نشطة وفيها تقييمات الزبائن. تقدر تواصل معنا قبل الشراء وتسأل أي سؤال." },
+          { q:"كيف بستلم الكود بعد الدفع؟", a:"بعد ما تدفع وتبعتلنا صورة الإيصال على الواتساب، الكود بيوصلك خلال دقائق على نفس رقم الواتساب." },
+          { q:"شو طرق الدفع المتوفرة؟", a:"زين كاش، أورنج موني، تحويل بنكي. كل التفاصيل بنرسلها لك بعد ما نأكد الطلب على الواتساب." },
+          { q:"إذا الكود ما اشتغل، شو بصير؟", a:"تواصل معنا فوراً على الواتساب خلال 24 ساعة من الاستلام، ورح نتأكد من المشكلة ونحلها لك." },
+          { q:"ليش بعض المنتجات مكتوب 'تواصل معنا' بدل السعر؟", a:"بعض الأسعار بتتغير حسب الكمية أو العرض الحالي. تواصل معنا وبنعطيك أحسن سعر متوفر اليوم." },
+          { q:"هل في خصم على الكميات؟", a:"أكيد! إذا بدك تشحن أكتر من مرة أو كميات كبيرة، تواصل معنا وبنعملك خصم خاص." },
+        ].map((f,i) => (
+          <details key={i} style={{
+            background:"linear-gradient(145deg,#0f1629,#151d35)",
+            border:"1px solid #ffffff10", borderRadius:14,
+            padding:"18px 22px", marginBottom:12, cursor:"pointer",
+          }}>
+            <summary style={{ fontWeight:900, fontSize:16, color:"#fff", listStyle:"none", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+              <span>{f.q}</span>
+              <span style={{ color:"#f5a623", fontSize:22 }}>+</span>
+            </summary>
+            <p style={{ marginTop:14, color:"#ffffff99", fontSize:14, lineHeight:1.7 }}>{f.a}</p>
+          </details>
+        ))}
+      </section>
       {/* CTA */}
       <section style={{
         margin:"0 5% 60px",
@@ -294,14 +369,32 @@ export default function Home() {
         <a href={WA} target="_blank" rel="noreferrer" className="glow-btn" style={{ fontSize:20 }}>💬 ابدأ المحادثة</a>
       </section>
 
-      {/* FOOTER */}
+     {/* FOOTER */}
       <footer style={{
-        borderTop:"1px solid #ffffff10", padding:"28px 5%",
-        textAlign:"center", color:"#ffffff33", fontSize:13,
+        borderTop:"1px solid #ffffff10", padding:"40px 5% 28px",
+        textAlign:"center", color:"#ffffff66", fontSize:13,
       }}>
-        <div style={{ fontSize:22, marginBottom:6 }}>🎮</div>
-        <div style={{ fontWeight:700, color:"#ffffff77", marginBottom:4 }}>هيبة ستور</div>
-        <div>جميع الحقوق محفوظة © 2026 · شحن ألعاب وتطبيقات</div>
+        <div style={{ fontSize:30, marginBottom:8 }}>🎮</div>
+        <div style={{ fontWeight:900, color:"#fff", fontSize:18, marginBottom:4 }}>هيبة ستور</div>
+        <div style={{ marginBottom:18, color:"#ffffff55" }}>📍 الزرقاء، الأردن 🇯🇴</div>
+        <div style={{ display:"flex", gap:18, justifyContent:"center", flexWrap:"wrap", marginBottom:18 }}>
+          <a href="/about" style={{ color:"#ffffff88", textDecoration:"none" }}>من نحن</a>
+          <span style={{ color:"#ffffff22" }}>·</span>
+          <a href="/terms" style={{ color:"#ffffff88", textDecoration:"none" }}>الشروط</a>
+          <span style={{ color:"#ffffff22" }}>·</span>
+          <a href="/refund" style={{ color:"#ffffff88", textDecoration:"none" }}>سياسة الاسترداد</a>
+          <span style={{ color:"#ffffff22" }}>·</span>
+          <a href="/privacy" style={{ color:"#ffffff88", textDecoration:"none" }}>الخصوصية</a>
+          <span style={{ color:"#ffffff22" }}>·</span>
+          <a href="/contact" style={{ color:"#ffffff88", textDecoration:"none" }}>تواصل معنا</a>
+        </div>
+        <div style={{ display:"flex", gap:14, justifyContent:"center", marginBottom:18 }}>
+          <a href={WA} target="_blank" rel="noreferrer" style={{ color:"#25d366", textDecoration:"none", fontWeight:700 }}>📱 واتساب</a>
+          <a href="https://www.facebook.com/share/1App5Bfp2S/" target="_blank" rel="noreferrer" style={{ color:"#1877f2", textDecoration:"none", fontWeight:700 }}>📘 فيسبوك</a>
+        </div>
+        <div style={{ borderTop:"1px solid #ffffff10", paddingTop:18, color:"#ffffff44" }}>
+          جميع الحقوق محفوظة © 2026 · هيبة ستور · شحن ألعاب وتطبيقات
+        </div>
       </footer>
 
       <a href={WA} target="_blank" rel="noreferrer" className="wa-float">💬</a>
