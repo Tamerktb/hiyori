@@ -21,9 +21,9 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 type Props = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 export const metadata: Metadata = {
   title: `HIYORI | Ecommerce Platforum Built with Nextjs 14.`,
@@ -70,10 +70,10 @@ const ProductDetailPageQuery = gql(/* GraphQL */ `
 `);
 
 async function ProductDetailPage({ params }: Props) {
+  const { slug } = await params;
   const { data, error } = await getClient().query(ProductDetailPageQuery, {
-    productSlug: params.slug as string,
+    productSlug: slug as string,
   });
-
   if (!data || !data.productsCollection || !data.productsCollection.edges)
     return notFound();
 

@@ -4,10 +4,11 @@ import { OrderProgress } from "@/features/orders";
 import Link from "next/link";
 
 type TrackOrderProps = {
-  params: { orderId: string };
+  params: Promise<{ orderId: string }>;
 };
 
-function TrackOrderPage({ params: { orderId } }: TrackOrderProps) {
+async function TrackOrderPage({ params }: TrackOrderProps) {
+  const { orderId } = await params;
   return (
     <Shell layout="narrow">
       <h2 className="text-xl font-semibold">Arrive at Tomorrow 22:00 </h2>
