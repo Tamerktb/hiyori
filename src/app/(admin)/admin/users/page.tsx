@@ -1,9 +1,6 @@
-import {
-  getCurrentUser,
-  listUsers,
-  UsersColumns,
-  AdminUserNav,
-} from "@/features/users";
+import { AdminUserNav } from "@/features/users/components/AdminUserNav";
+import { UsersColumns } from "@/features/users/components/UsersColumns";
+// listUsers is not used or doesn't exist - remove it
 import AdminShell from "@/components/admin/AdminShell";
 import { ProductsDataTable } from "@/features/products";
 import ErrorToaster from "@/components/layouts/ErrorToaster";
