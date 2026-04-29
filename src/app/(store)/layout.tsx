@@ -48,7 +48,7 @@ export default function StoreLayout({ children }: { children: ReactNode }) {
         </div>
       </footer>
 
-      <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="fixed bottom-5 right-5 bg-green-500 hover:bg-green-600 text-white rounded-full w-14 h-14 shadow-lg z-50 flex items-center justify-center text-2xl" aria-label="Contact on WhatsApp">💬</a>
+     
     </div>
   );
 }
