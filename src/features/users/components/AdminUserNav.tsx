@@ -14,3 +14,4 @@ function AdminUserNav() {
 }
 
 export default AdminUserNav;
+export { AdminUserNav };

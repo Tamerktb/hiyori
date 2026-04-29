@@ -134,3 +134,4 @@ const DeleteCategoryDialog = ({ categoryId }: { categoryId: string }) => {
 };
 
 export default UsersColumns;
+export { UsersColumns };

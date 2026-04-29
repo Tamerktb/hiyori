@@ -35,3 +35,17 @@ export const getUser = async ({ userId }: { userId: string }) => {
   if (error) throw new Error("User not found");
   return data;
 };
+
+export const createUser = async (data: AdminUserFormData) => {
+  const supabase = await createClient();
+  const adminAuthClient = supabase.auth.admin;
+
+  const { data: user, error } = await adminAuthClient.createUser({
+    email: data.email,
+    password: data.password,
+    email_confirm: true,
+  });
+
+  if (error) throw new Error(error.message);
+  return user;
+};

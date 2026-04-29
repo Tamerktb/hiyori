@@ -14,18 +14,19 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 interface CategoryPageProps {
-  params: {
+  params: Promise<{
     collectionSlug: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     [key: string]: string | string[] | undefined;
-  };
+  }>;
 }
 
-export function generateMetadata({ params }: CategoryPageProps) {
+export async function generateMetadata({ params }: CategoryPageProps) {
+  const { collectionSlug } = await params;
   return {
-    title: `HIYORI | ${toTitleCase(unslugify(params.collectionSlug))}`,
-    description: `HIYORI | Buy ${params.collectionSlug} funiture.`,
+    title: `HIYORI | ${toTitleCase(unslugify(collectionSlug))}`,
+    description: `HIYORI | Buy ${collectionSlug} funiture.`,
   };
 }
 
@@ -60,7 +61,7 @@ const CollectionRouteQuery = gql(/* GraphQL */ `
 `);
 
 async function CategoryPage({ params, searchParams }: CategoryPageProps) {
-  const { collectionSlug } = params;
+  const { collectionSlug } = await params;
 
   const { data } = await getClient().query(CollectionRouteQuery, {
     collectionSlug,
