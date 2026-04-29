@@ -2,13 +2,13 @@
   "name": "hiyori",
   "version": "0.1.0",
   "private": true,
-"scripts": {
-  "dev": "next dev",
-  "build": "npm run codegen && next build",
-  "start": "next start",
-  "lint": "next lint",
-  "codegen": "graphql-codegen"
-},
+  "scripts": {
+    "dev": "next dev",
+    "build": "npm run codegen && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "codegen": "graphql-codegen"
+  },
   "lint-staged": {
     "*.{js,css,md,ts,tsx}": "prettier --write"
   },
@@ -119,7 +119,6 @@
     "prettier": "^3.2.4",
     "progress": "^2.0.3",
     "styled-jsx": "^5.1.2",
-    "supabase": "^1.136.3",
     "tailwindcss": "^3.3.0",
     "tsx": "^4.7.0",
     "typescript": "^5.0.0"
