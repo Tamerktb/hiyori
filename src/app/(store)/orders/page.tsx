@@ -3,7 +3,6 @@ import { BuyAgainCard, OrdersList } from "@/features/orders/components";
 import { gql } from "@/gql";
 import { createClient } from "@/lib/supabase/server";
 import { getClient } from "@/lib/urql";
-import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import React from "react";
 
@@ -29,8 +28,7 @@ const OrderPageQuery = gql(/* GraphQL */ `
 `);
 
 async function OrderPage() {
-  const cookieStore = cookies();
-  const supabase = createClient({ cookieStore });
+  const supabase = await createClient();
 
   const {
     data: { user },

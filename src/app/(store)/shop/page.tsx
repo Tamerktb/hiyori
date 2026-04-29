@@ -10,9 +10,9 @@ import {
 import { Suspense } from "react";
 
 interface ProductsPageProps {
-  searchParams: {
+  searchParams: Promise<{
     [key: string]: string | string[] | undefined;
-  };
+  }>;
 }
 
 async function ProductsPage({}: ProductsPageProps) {

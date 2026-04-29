@@ -1,21 +1,19 @@
 import { AdminUserNav } from "@/features/users/components/AdminUserNav";
 import { UsersColumns } from "@/features/users/components/UsersColumns";
-// listUsers is not used or doesn't exist - remove it
 import AdminShell from "@/components/admin/AdminShell";
 import { ProductsDataTable } from "@/features/products";
 import ErrorToaster from "@/components/layouts/ErrorToaster";
-// TODO: CREATE New Data Table for golbaluse
+import { createClient } from "@/lib/supabase/server";
 
 type AdminUsersPageProps = {
-  searchParams: {
+  searchParams: Promise<{
     [key: string]: string | string[] | undefined;
-  };
+  }>;
 };
 
 async function UsersPage({ searchParams }: AdminUsersPageProps) {
-  const currentUser = await getCurrentUser();
-
-  const users = await listUsers({});
+  const supabase = await createClient();
+  const { data: { users }, error } = await supabase.auth.admin.listUsers();
 
   return (
     <AdminShell heading="Users" description="Edit/Create new user by admin.">

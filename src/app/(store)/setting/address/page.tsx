@@ -1,14 +1,12 @@
 import CartSection from "@/features/carts/components/CartSection";
 import CartSectionSkeleton from "@/features/carts/components/CartSectionSkeleton";
 import { createClient } from "@/lib/supabase/server";
-import { cookies } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 async function CartPage() {
-  const cookieStore = cookies();
-  const supabase = createClient({ cookieStore });
+const supabase = await createClient();
 
   const {
     data: { user },

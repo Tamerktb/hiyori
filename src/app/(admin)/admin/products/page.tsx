@@ -10,9 +10,9 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 type AdminProjectsPageProps = {
-  searchParams: {
+  searchParams: Promise<{
     [key: string]: string | string[] | undefined;
-  };
+  }>;
 };
 
 async function ProductsPage({ searchParams }: AdminProjectsPageProps) {

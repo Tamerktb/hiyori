@@ -9,9 +9,9 @@ import { CollectionsColumns } from "@/features/collections";
 import { DataTable } from "@/features/cms";
 
 type AdminCollectionsPageProps = {
-  searchParams: {
+  searchParams: Promise<{
     [key: string]: string | string[] | undefined;
-  };
+  }>;
 };
 
 const AdminCollectionsPageQuery = gql(/* GraphQL */ `

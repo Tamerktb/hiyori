@@ -9,9 +9,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type AdminOrdersPageProps = {
-  searchParams: {
+  searchParams: Promise<{
     [key: string]: string | string[] | undefined;
-  };
+  }>;
 };
 
 const AdminOrdersPageQuery = gql(/* GraphQL */ `
