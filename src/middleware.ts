@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { env } from "@/env.mjs";
 
 export async function middleware(request: NextRequest) {
-  let response = NextResponse.next({ request: { headers: request.headers } });
+  let response = NextResponse.next({ request });
 
   const supabase = createServerClient(
     env.NEXT_PUBLIC_SUPABASE_URL,
@@ -11,14 +11,12 @@ export async function middleware(request: NextRequest) {
     {
       cookies: {
         getAll: () => request.cookies.getAll(),
-        setAll: (cookiesToSet) => {
-          cookiesToSet.forEach(({ name, value }) =>
+        setAll: (toSet) => {
+          toSet.forEach(({ name, value }) =>
             request.cookies.set(name, value),
           );
-          response = NextResponse.next({
-            request: { headers: request.headers },
-          });
-          cookiesToSet.forEach(({ name, value, options }) =>
+          response = NextResponse.next({ request });
+          toSet.forEach(({ name, value, options }) =>
             response.cookies.set(name, value, options),
           );
         },
@@ -26,7 +24,7 @@ export async function middleware(request: NextRequest) {
     },
   );
 
-  // Refresh the auth cookie. CRITICAL — without this, sessions don't survive page navigation.
+  // CRITICAL: this call refreshes auth cookies. Without it, sessions die.
   await supabase.auth.getUser();
 
   return response;
@@ -34,7 +32,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Run on every page except static assets, image files, and API routes.
-    "/((?!_next/static|_next/image|favicon.ico|apps/.*\\.(?:jpg|jpeg|png|svg|webp|gif)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:jpg|jpeg|png|svg|webp|gif|ico|css|js)$).*)",
   ],
 };

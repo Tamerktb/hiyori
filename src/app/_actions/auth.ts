@@ -1,79 +1,48 @@
 "use server";
 
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { env } from "@/env.mjs";
 
-async function getSupabase() {
-  const cookieStore = await cookies();
-  return createServerClient(
-    env.NEXT_PUBLIC_SUPABASE_URL,
-    env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    {
-      cookies: {
-        getAll: () => cookieStore.getAll(),
-        setAll: (toSet) => {
-          toSet.forEach(({ name, value, options }) => {
-            try {
-              cookieStore.set(name, value, options);
-            } catch {
-              // ignore — happens in some contexts
-            }
-          });
-        },
-      },
-    },
-  );
-}
+export async function signInAction(formData: FormData) {
+  const email = String(formData.get("email") ?? "").trim();
+  const password = String(formData.get("password") ?? "");
 
-export async function signOut() {
-  const supabase = await getSupabase();
-  await supabase.auth.signOut();
-  revalidatePath("/", "layout");
-  redirect("/");
-}
+  if (!email || !password) {
+    return { error: "البريد وكلمة المرور مطلوبة" };
+  }
 
-export async function signInAction({
-  email,
-  password,
-  redirectTo,
-}: {
-  email: string;
-  password: string;
-  redirectTo?: string;
-}): Promise<{ error?: string; redirectTo?: string }> {
-  const supabase = await getSupabase();
+  const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
   if (error || !data.user) {
-    return { error: error?.message ?? "Invalid credentials" };
+    return { error: error?.message ?? "بيانات الدخول غير صحيحة" };
   }
 
+  // Check admin
   const { data: admin } = await supabase
     .from("admins")
     .select("user_id")
     .eq("user_id", data.user.id)
     .maybeSingle();
 
-  if (redirectTo) return { redirectTo };
-  if (admin) return { redirectTo: "/admin" };
-  return { redirectTo: "/" };
+  revalidatePath("/", "layout");
+  redirect(admin ? "/admin" : "/");
 }
-export async function signUpAction({
-  email,
-  password,
-  name,
-}: {
-  email: string;
-  password: string;
-  name: string;
-}): Promise<{ error?: string; redirectTo?: string; needsConfirmation?: boolean }> {
-  const supabase = await getSupabase();
+
+export async function signUpAction(formData: FormData) {
+  const email = String(formData.get("email") ?? "").trim();
+  const password = String(formData.get("password") ?? "");
+  const name = String(formData.get("name") ?? "").trim();
+
+  if (!email || !password) {
+    return { error: "البريد وكلمة المرور مطلوبة" };
+  }
+
+  const supabase = await createClient();
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -83,7 +52,16 @@ export async function signUpAction({
   if (error) return { error: error.message };
 
   if (data.session) {
-    return { redirectTo: "/" };
+    revalidatePath("/", "layout");
+    redirect("/");
   }
+
   return { needsConfirmation: true };
+}
+
+export async function signOutAction() {
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+  revalidatePath("/", "layout");
+  redirect("/");
 }

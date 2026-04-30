@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { signOut } from "@/app/_actions/auth";
+import { signOutAction } from "@/app/_actions/auth";
 
 export default async function UserMenu() {
   const supabase = await createClient();
@@ -73,13 +73,7 @@ export default async function UserMenu() {
           zIndex: 200,
         }}
       >
-        <div
-          style={{
-            padding: "10px 12px",
-            borderBottom: "1px solid #ffffff10",
-            marginBottom: 4,
-          }}
-        >
+        <div style={{ padding: "10px 12px", borderBottom: "1px solid #ffffff10", marginBottom: 4 }}>
           <div style={{ fontSize: 11, color: "#ffffff66", marginBottom: 4 }}>
             {isAdmin ? "👑 مسؤول" : "👤 مستخدم"}
           </div>
@@ -90,20 +84,12 @@ export default async function UserMenu() {
         {isAdmin && (
           <Link
             href="/admin"
-            style={{
-              display: "block",
-              padding: "10px 12px",
-              color: "#fff",
-              textDecoration: "none",
-              fontSize: 14,
-              borderRadius: 8,
-              fontWeight: 700,
-            }}
+            style={{ display: "block", padding: "10px 12px", color: "#fff", textDecoration: "none", fontSize: 14, borderRadius: 8, fontWeight: 700 }}
           >
             🎮 لوحة التحكم
           </Link>
         )}
-        <form action={signOut}>
+        <form action={signOutAction}>
           <button
             type="submit"
             style={{
