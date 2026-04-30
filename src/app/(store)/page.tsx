@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { getApps } from "@/lib/apps";
-import HomeUserNav from "@/components/layouts/HomeUserNav";
 export const revalidate = 60; // ISR — pages auto-update every 60s
 import UserMenu from "@/components/UserMenu";
 const WA = "https://wa.me/962781367709";
@@ -64,7 +63,7 @@ export default async function Home() {
 
   {/* RIGHT SIDE: login state + WA button */}
   <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-    <HomeUserNav />
+   
     <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           <a href={WA} target="_blank" rel="noreferrer" style={{ background: "linear-gradient(135deg,#25d366,#128c5e)", color: "#fff", padding: "10px 22px", borderRadius: 50, fontWeight: 700, fontSize: 15, textDecoration: "none", display: "flex", alignItems: "center", gap: 8 }}>
             📲 تواصل معنا

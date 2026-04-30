@@ -1,31 +1,53 @@
-"use client";
-import Image from "next/image";
-import Branding from "@/components/layouts/Branding";
+import Link from "next/link";
 
-interface AuthLayoutProps {
+export default function AuthLayout({
+  children,
+}: {
   children: React.ReactNode;
-}
-
-export default function AuthLayout({ children }: AuthLayoutProps) {
+}) {
   return (
-    <div className="grid min-h-screen grid-cols-1 overflow-hidden md:grid-cols-3 lg:grid-cols-2">
-      <div className="relative w-full">
-        <div className="absolute top-0 bottom-0 left-0 right-0">
-          <Image
-            src="/assets/cutingcardImage.jpg"
-            alt="Living Room Design with a Sofa"
-            priority
-            fill
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-background to-background/60 md:to-background/40" />
-
-          <Branding className="absolute left-8 top-8 z-20" />
-        </div>
-      </div>
-
-      <main className="container absolute top-1/2 col-span-1 flex -translate-y-1/2 items-center md:static md:top-0 md:col-span-2 md:flex md:translate-y-0 lg:col-span-1">
-        {children}
+    <div
+      dir="rtl"
+      style={{
+        minHeight: "100vh",
+        background: "#080b14",
+        color: "#fff",
+        fontFamily: "'Tajawal','Cairo',Arial,sans-serif",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');`}</style>
+      <header
+        style={{
+          padding: "18px 5%",
+          borderBottom: "1px solid #ffffff10",
+        }}
+      >
+        <Link
+          href="/"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 12,
+            textDecoration: "none",
+            color: "#fff",
+          }}
+        >
+          <span style={{ fontSize: 28 }}>🎮</span>
+          <span style={{ fontSize: 20, fontWeight: 900 }}>هيبة ستور</span>
+        </Link>
+      </header>
+      <main
+        style={{
+          flex: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "40px 5%",
+        }}
+      >
+        <div style={{ width: "100%", maxWidth: 440 }}>{children}</div>
       </main>
     </div>
   );

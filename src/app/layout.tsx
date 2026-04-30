@@ -2,28 +2,23 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import CustomProvider from "../providers/CustomProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "HibaStore",
-  description: "HibaStore - Your shopping destination",
+  title: "هيبة ستور | HibaStore",
+  description: "شحن ألعاب وتطبيقات | بيجو، رايزر غولد، ببجي، فري فاير، جواكر",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <CustomProvider>
-        <body className={inter.className}>
-          {children}
-          <Toaster />
-        </body>
-      </CustomProvider>
+    <html lang="ar" dir="rtl">
+      <body className={inter.className}>
+        {children}
+        <Toaster />
+      </body>
     </html>
   );
 }
