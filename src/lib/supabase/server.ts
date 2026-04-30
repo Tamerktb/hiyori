@@ -14,11 +14,18 @@ export async function createClient() {
         },
         setAll(toSet) {
           try {
-            toSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options),
-            );
+            toSet.forEach(({ name, value, options }) => {
+              cookieStore.set(name, value, {
+                ...options,
+                // Force these so cookies survive cross-page navigation
+                sameSite: "lax",
+                secure: true,
+                httpOnly: true,
+                path: "/",
+              });
+            });
           } catch {
-            // Calling cookies().set in a Server Component is harmless — middleware refreshes them.
+            // ignore in Server Components
           }
         },
       },

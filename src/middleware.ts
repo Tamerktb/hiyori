@@ -17,14 +17,18 @@ export async function middleware(request: NextRequest) {
           );
           response = NextResponse.next({ request });
           toSet.forEach(({ name, value, options }) =>
-            response.cookies.set(name, value, options),
+            response.cookies.set(name, value, {
+              ...options,
+              sameSite: "lax",
+              secure: true,
+              path: "/",
+            }),
           );
         },
       },
     },
   );
 
-  // CRITICAL: this call refreshes auth cookies. Without it, sessions die.
   await supabase.auth.getUser();
 
   return response;
