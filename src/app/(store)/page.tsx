@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { getApps } from "@/lib/apps";
-export const revalidate = 60; // ISR — pages auto-update every 60s
+
 import UserMenu from "@/components/UserMenu";
+export const dynamic = "force-dynamic";
 const WA = "https://wa.me/962781367709";
 
 const features = [

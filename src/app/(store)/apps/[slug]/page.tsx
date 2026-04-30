@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAppBySlug, getApps } from "@/lib/apps";
 import UserMenu from "@/components/UserMenu";
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 const WA = "https://wa.me/962781367709";
 
