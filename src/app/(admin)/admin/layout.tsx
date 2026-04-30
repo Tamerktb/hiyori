@@ -1,37 +1,48 @@
-import { SidebarNav } from "@/components/admin/SidebarNav";
-import { ScrollArea } from "@/components/ui/scrollArea";
-import { dashboardConfig } from "@/config/dashboard";
-import { createClient } from "@/lib/supabase/server";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import Link from "next/link";
 
-interface DashboardLayoutProps {
-  children: React.ReactNode;
-}
-
-export default async function DashboardLayout({
+export default function AdminLayout({
   children,
-}: DashboardLayoutProps) {
-  const cookieStore = await cookies();
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
-
-  if (authError || !user) {
-    redirect("/sign-in");
-  }
-
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div className="mx-auto px- max-w- pt- flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr) 240px_minmax(0,1fr)] lg:gap-10 bg-white">
-      <aside className="fixed top-14 z-30 -ml-2 hidden h- w-full shrink-0 overflow-y-auto border-r md:sticky md:block">
-        <ScrollArea className="py-6 pr-6 lg:py-8">
-          <SidebarNav items={dashboardConfig.sidebarNav} />
-        </ScrollArea>
-      </aside>
-      <main className="flex w-full flex-col overflow-hidden pt- ">
+    <div
+      dir="rtl"
+      style={{
+        minHeight: "100vh",
+        background: "#080b14",
+        color: "#fff",
+        fontFamily: "'Tajawal','Cairo',Arial,sans-serif",
+      }}
+    >
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');`}</style>
+      <header
+        style={{
+          padding: "16px 5%",
+          borderBottom: "1px solid #ffffff10",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          background: "#0a0e1a",
+          position: "sticky",
+          top: 0,
+          zIndex: 50,
+        }}
+      >
+        <Link
+          href="/admin"
+          style={{ color: "#fff", textDecoration: "none", fontWeight: 900 }}
+        >
+          🎮 لوحة التحكم — هيبة ستور
+        </Link>
+        <Link
+          href="/"
+          style={{ color: "#ffffff88", textDecoration: "none", fontSize: 14 }}
+        >
+          ← عودة للموقع
+        </Link>
+      </header>
+      <main style={{ padding: "30px 5%", maxWidth: 1200, margin: "0 auto" }}>
         {children}
       </main>
     </div>

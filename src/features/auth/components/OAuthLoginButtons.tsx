@@ -13,16 +13,15 @@ function OAuthLoginButtons() {
   const supabase = createClient();
   const router = useRouter();
 
-  const signWithGoogle = async () => {
-    setIsLoading(true);
+const signWithGoogle = async () => {
+  setIsLoading(true);
 
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: getURL(),
-      },
-    });
-
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: `${getURL()}auth/callback`,
+    },
+  });
     if (error) {
       router.push("/sign-in");
     }
@@ -36,7 +35,7 @@ function OAuthLoginButtons() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "github",
       options: {
-        redirectTo: getURL(),
+       redirectTo: `${getURL()}auth/callback`,
       },
     });
 

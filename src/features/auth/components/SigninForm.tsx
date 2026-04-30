@@ -44,22 +44,49 @@ export function SignInForm() {
     if (error) toast({ title: "Error", description: error });
   }, [searchParams]);
 
-  function onSubmit({ email, password }: FormData) {
-    startTransition(async () => {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      console.log("data", data);
-
-      if (error) {
-        toast({ title: "Error", description: error.message });
-      } else {
-        toast({ title: "Login Sucess" });
-        router.push(searchParams?.get("from") || "/");
-      }
+function onSubmit({ email, password }: FormData) {
+  startTransition(async () => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
     });
-  }
+
+    if (error) {
+      toast({ title: "Error", description: error.message });
+      return;
+    }
+
+    toast({ title: "Login Success" });
+
+    if (data.user) {
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", data.user.id)
+    .single();
+
+  console.log("=== SIGNIN DEBUG ===");
+  console.log("user.id:", data.user.id);
+  console.log("profile:", profile);
+  console.log("profile.role:", profile?.role);
+  console.log("profileError:", profileError);
+  console.log("===================");
+
+  const redirectTo =
+    searchParams?.get("redirectTo") || searchParams?.get("from");
+
+      if (redirectTo) {
+        router.push(redirectTo);
+      } else if (profile?.role === "admin") {
+        router.push("/admin");
+      } else {
+        router.push("/");
+      }
+
+      router.refresh();
+    }
+  });
+}
 
   return (
     <Form {...form}>
