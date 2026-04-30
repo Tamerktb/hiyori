@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/use-toast";
-import { createClient } from "@/lib/supabase/client";
+import { signInAction } from "@/app/_actions/auth";
 import { authSchema } from "../validations";
 import { PasswordInput } from "./PasswordInput";
 
@@ -28,65 +28,29 @@ export function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
-  const supabase = createClient();
   const [isPending, startTransition] = React.useTransition();
 
   const form = useForm<FormData>({
     resolver: zodResolver(authSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: { email: "", password: "" },
   });
 
-  React.useEffect(() => {
-    const error = searchParams.get("error");
-    if (error) toast({ title: "Error", description: error });
-  }, [searchParams]);
+  function onSubmit({ email, password }: FormData) {
+    startTransition(async () => {
+      const redirectTo =
+        searchParams?.get("redirectTo") ||
+        searchParams?.get("from") ||
+        undefined;
 
-function onSubmit({ email, password }: FormData) {
-  startTransition(async () => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+      const result = await signInAction({ email, password, redirectTo });
 
-    if (error) {
-      toast({ title: "Error", description: error.message });
-      return;
-    }
-
-    toast({ title: "Login Success" });
-
-    if (data.user) {
-  const { data: profile, error: profileError } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", data.user.id)
-    .single();
-
-  console.log("=== SIGNIN DEBUG ===");
-  console.log("user.id:", data.user.id);
-  console.log("profile:", profile);
-  console.log("profile.role:", profile?.role);
-  console.log("profileError:", profileError);
-  console.log("===================");
-
-  const redirectTo =
-    searchParams?.get("redirectTo") || searchParams?.get("from");
-
-      if (redirectTo) {
-        router.push(redirectTo);
-      } else if (profile?.role === "admin") {
-        router.push("/admin");
-      } else {
-        router.push("/");
+      if (result?.error) {
+        toast({ title: "خطأ", description: result.error });
+        return;
       }
-
-      router.refresh();
-    }
-  });
-}
+      // signInAction redirects on success — this code only runs on error.
+    });
+  }
 
   return (
     <Form {...form}>
@@ -129,7 +93,6 @@ function onSubmit({ email, password }: FormData) {
             <Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
           )}
           Sign in
-          <span className="sr-only">Sign in</span>
         </Button>
       </form>
     </Form>
