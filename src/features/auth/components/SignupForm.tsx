@@ -3,7 +3,6 @@
 import * as React from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { createClient } from "@/lib/supabase/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { z } from "zod";
 
@@ -19,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
+import { signUpAction } from "@/app/_actions/auth";
 import { PasswordInput } from "./PasswordInput";
 import { signupSchema } from "../validations";
 
@@ -27,8 +27,7 @@ type FormData = z.infer<typeof signupSchema>;
 export function SignUpForm() {
   const searchParams = useSearchParams();
   const { toast } = useToast();
-  const supabase = createClient();
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isPending, startTransition] = React.useTransition();
 
   const form = useForm<FormData>({
     resolver: zodResolver(signupSchema),
@@ -39,32 +38,22 @@ export function SignUpForm() {
     },
   });
 
-  async function onSubmit({ email, password, name }: FormData) {
-    setIsLoading(true);
-
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { name } },
+  function onSubmit({ email, password, name }: FormData) {
+    startTransition(async () => {
+      const result = await signUpAction({ email, password, name });
+      if (result?.error) {
+        toast({ title: "خطأ", description: result.error });
+        return;
+      }
+      if (result?.redirectTo) {
+        window.location.href = result.redirectTo;
+      } else if (result?.needsConfirmation) {
+        toast({
+          title: "تم إنشاء الحساب",
+          description: "تم إرسال رابط تفعيل إلى بريدك الإلكتروني.",
+        });
+      }
     });
-
-    if (error) {
-      toast({ title: "خطأ", description: error.message });
-      setIsLoading(false);
-      return;
-    }
-
-    if (data.session) {
-      toast({ title: "تم إنشاء الحساب بنجاح" });
-      window.location.href = "/";
-    } else {
-      toast({
-        title: "تم إنشاء الحساب",
-        description:
-          "تم إرسال رابط تفعيل إلى بريدك الإلكتروني. افتحه لإكمال التسجيل.",
-      });
-      setIsLoading(false);
-    }
   }
 
   return (
@@ -86,7 +75,6 @@ export function SignUpForm() {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="email"
@@ -113,8 +101,8 @@ export function SignUpForm() {
             </FormItem>
           )}
         />
-        <Button disabled={isLoading}>
-          {isLoading && (
+        <Button disabled={isPending}>
+          {isPending && (
             <Icons.spinner
               className="mr-2 h-4 w-4 animate-spin"
               aria-hidden="true"
