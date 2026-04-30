@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { getApps } from "@/lib/apps";
-
+import HomeUserNav from "@/components/layouts/HomeUserNav";
 export const revalidate = 60; // ISR — pages auto-update every 60s
-
+import UserMenu from "@/components/UserMenu";
 const WA = "https://wa.me/962781367709";
 
 const features = [
@@ -46,22 +46,33 @@ export default async function Home() {
         .wa-float { position:fixed; bottom:28px; left:28px; width:62px; height:62px; background:#25d366; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:30px; box-shadow:0 4px 24px #25d36655; z-index:999; text-decoration:none; transition:transform .3s; animation:pulse 2s infinite; }
         .wa-float:hover { transform:scale(1.1); }
         @keyframes pulse { 0%,100%{box-shadow:0 4px 24px #25d36655;} 50%{box-shadow:0 4px 40px #25d36699;} }
+        .user-menu summary { list-style: none; }
+        .user-menu summary::-webkit-details-marker { display: none; }
+        .user-menu summary::marker { display: none; }
         .hero-bg { position:absolute; inset:0; pointer-events:none; background:radial-gradient(ellipse 60% 50% at 20% 40%,#f5a62318 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 80% 60%,#ff4d4d14 0%,transparent 60%); }
       `}</style>
 
-      {/* NAV */}
-      <nav style={{ padding: "18px 5%", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #ffffff10", background: "#080b14ee", backdropFilter: "blur(12px)", position: "sticky", top: 0, zIndex: 100 }}>
-        <Link href="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none", color: "#fff" }}>
-          <span style={{ fontSize: 32 }}>🎮</span>
-          <div>
-            <div style={{ fontSize: 22, fontWeight: 900, lineHeight: 1.1 }}>هيبة ستور</div>
-            <div style={{ fontSize: 11, color: "#ffffff55", letterSpacing: 2 }}>HIBA STORE</div>
-          </div>
-        </Link>
-        <a href={WA} target="_blank" rel="noreferrer" style={{ background: "linear-gradient(135deg,#25d366,#128c5e)", color: "#fff", padding: "10px 22px", borderRadius: 50, fontWeight: 700, fontSize: 15, textDecoration: "none", display: "flex", alignItems: "center", gap: 8 }}>
-          📲 تواصل معنا
-        </a>
-      </nav>
+    {/* NAV */}
+<nav style={{ padding: "18px 5%", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #ffffff10", background: "#080b14ee", backdropFilter: "blur(12px)", position: "sticky", top: 0, zIndex: 100 }}>
+  <Link href="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none", color: "#fff" }}>
+    <span style={{ fontSize: 32 }}>🎮</span>
+    <div>
+      <div style={{ fontSize: 22, fontWeight: 900, lineHeight: 1.1 }}>هيبة ستور</div>
+      <div style={{ fontSize: 11, color: "#ffffff55", letterSpacing: 2 }}>HIBA STORE</div>
+    </div>
+  </Link>
+
+  {/* RIGHT SIDE: login state + WA button */}
+  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+    <HomeUserNav />
+    <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          <a href={WA} target="_blank" rel="noreferrer" style={{ background: "linear-gradient(135deg,#25d366,#128c5e)", color: "#fff", padding: "10px 22px", borderRadius: 50, fontWeight: 700, fontSize: 15, textDecoration: "none", display: "flex", alignItems: "center", gap: 8 }}>
+            📲 تواصل معنا
+          </a>
+          <UserMenu />
+        </div>
+  </div>
+</nav>
 
       {/* HERO */}
       <section style={{ position: "relative", padding: "80px 5% 60px", textAlign: "center", overflow: "hidden" }}>

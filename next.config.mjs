@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig = { experimental: {
+    serverActions: {
+      bodySizeLimit: "10mb",
+    },
+  },
   serverExternalPackages: ['@supabase/supabase-js'],
   images: {
     unoptimized: true,

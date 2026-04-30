@@ -27,12 +27,40 @@ function bust() {
 const s = (v: FormDataEntryValue | null) => String(v ?? "").trim();
 const n = (v: FormDataEntryValue | null) => Number(v ?? 0) || 0;
 
+async function uploadImageIfPresent(
+  sb: any,
+  formData: FormData,
+  slug: string,
+): Promise<string | null> {
+  const file = formData.get("image_file");
+  if (!(file instanceof File) || file.size === 0) return null;
+
+  const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+  const safeSlug =
+    slug.replace(/[^a-z0-9-]/gi, "-").toLowerCase() || "app";
+  const path = `${safeSlug}-${Date.now()}.${ext}`;
+
+  const { data, error } = await sb.storage
+    .from("app-images")
+    .upload(path, file, { upsert: true, cacheControl: "3600" });
+
+  if (error) throw new Error(`فشل رفع الصورة: ${error.message}`);
+
+  const { data: urlData } = sb.storage
+    .from("app-images")
+    .getPublicUrl(data.path);
+
+  return urlData.publicUrl;
+}
+
 export async function createApp(formData: FormData) {
   const sb = await requireAdmin();
   const slug = s(formData.get("slug")).toLowerCase();
   const name_ar = s(formData.get("name_ar"));
   const name_en = s(formData.get("name_en"));
   if (!slug || !name_ar || !name_en) throw new Error("الحقول المطلوبة ناقصة");
+  const uploaded = await uploadImageIfPresent(sb, formData, slug);
+  const image_url_value = uploaded || s(formData.get("image_url")) || null;
   const { error } = await sb.from("apps").insert({
     slug,
     name_ar,
@@ -40,7 +68,7 @@ export async function createApp(formData: FormData) {
     emoji: s(formData.get("emoji")) || "🎮",
     color: s(formData.get("color")) || "#f5a623",
    note: s(formData.get("note")) || null,
-    image_url: s(formData.get("image_url")) || null,
+    image_url: image_url_value,
     sort_order: n(formData.get("sort_order")),
   });
   if (error) throw new Error(error.message);
@@ -50,16 +78,20 @@ export async function createApp(formData: FormData) {
 export async function updateApp(formData: FormData) {
   const sb = await requireAdmin();
   const id = s(formData.get("id"));
+  const slug = s(formData.get("slug")).toLowerCase();
+  const uploaded = await uploadImageIfPresent(sb, formData, slug);
+  const image_url_value =
+    uploaded || s(formData.get("image_url")) || null;
   const { error } = await sb
     .from("apps")
     .update({
-      slug: s(formData.get("slug")).toLowerCase(),
+      slug,
       name_ar: s(formData.get("name_ar")),
       name_en: s(formData.get("name_en")),
       emoji: s(formData.get("emoji")) || "🎮",
       color: s(formData.get("color")) || "#f5a623",
          note: s(formData.get("note")) || null,
-      image_url: s(formData.get("image_url")) || null,
+           image_url: image_url_value,
       sort_order: n(formData.get("sort_order")),
       active: formData.get("active") === "on",
       updated_at: new Date().toISOString(),

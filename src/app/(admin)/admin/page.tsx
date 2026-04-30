@@ -114,7 +114,8 @@ export default async function AdminPage() {
           <input name="emoji" placeholder="🎮" defaultValue="🎮" style={inputStyle} />
           <input name="color" placeholder="#f5a623" defaultValue="#f5a623" style={inputStyle} />
           <input name="note" placeholder="ملاحظة (اختياري)" style={inputStyle} />
-          <input name="image_url" placeholder="رابط الصورة (مثال: /apps/pubg-mobile.jpeg)" style={inputStyle} />
+          <input name="image_file" type="file" accept="image/*" style={inputStyle} />
+          <input name="image_url" placeholder="أو رابط مباشر" style={inputStyle} />
           <input name="sort_order" type="number" placeholder="ترتيب" defaultValue={apps.length + 1} style={inputStyle} />
           <button type="submit" style={btnPrimary}>إضافة</button>
         </form>
@@ -152,7 +153,11 @@ export default async function AdminPage() {
             <input name="emoji" defaultValue={app.emoji} style={{ ...inputStyle, width: 60 }} />
             <input name="color" defaultValue={app.color} style={{ ...inputStyle, width: 90 }} />
             <input name="note" defaultValue={app.note ?? ""} placeholder="ملاحظة" style={inputStyle} />
-            <input name="image_url" defaultValue={app.image_url ?? ""} placeholder="رابط الصورة (مثال: /apps/pubg-mobile.jpeg)" style={inputStyle} />
+           {app.image_url && (
+              <img src={app.image_url} alt="" style={{ width: 40, height: 40, borderRadius: 8, objectFit: "cover", border: "1px solid #ffffff22" }} />
+            )}
+            <input name="image_file" type="file" accept="image/*" style={{ ...inputStyle, gridColumn: "span 2" }} />
+            <input name="image_url" defaultValue={app.image_url ?? ""} placeholder="أو رابط مباشر" style={inputStyle} />
             <input name="sort_order" type="number" defaultValue={app.sort_order} style={{ ...inputStyle, width: 60 }} />
             <label style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 12, color: "#ffffff99" }}>
               <input type="checkbox" name="active" defaultChecked={app.active} /> نشط

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAppBySlug, getApps } from "@/lib/apps";
-
+import UserMenu from "@/components/UserMenu";
 export const revalidate = 60;
 
 const WA = "https://wa.me/962781367709";
@@ -35,6 +35,9 @@ export default async function AppPage({
         * { box-sizing:border-box; margin:0; padding:0; }
         .price-row { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; background:#ffffff08; border-radius:14px; margin-bottom:10px; text-decoration:none; border:1px solid transparent; transition:all .25s; }
         .price-row:hover { background:#ffffff14; transform:translateX(-4px); }
+        .user-menu summary { list-style: none; }
+        .user-menu summary::-webkit-details-marker { display: none; }
+        .user-menu summary::marker { display: none; }
         .wa-float { position:fixed; bottom:28px; left:28px; width:62px; height:62px; background:#25d366; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:30px; box-shadow:0 4px 24px #25d36655; z-index:999; text-decoration:none; }
       `}</style>
 
@@ -43,7 +46,10 @@ export default async function AppPage({
           <span style={{ fontSize: 28 }}>🎮</span>
           <div style={{ fontWeight: 900, fontSize: 20 }}>هيبة ستور</div>
         </Link>
-        <Link href="/" style={{ color: "#ffffff88", textDecoration: "none", fontSize: 14 }}>← الرئيسية</Link>
+        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          <Link href="/" style={{ color: "#ffffff88", textDecoration: "none", fontSize: 14 }}>← الرئيسية</Link>
+          <UserMenu />
+        </div>
       </nav>
 
       <section style={{ padding: "60px 5% 40px", textAlign: "center", maxWidth: 800, margin: "0 auto" }}>
