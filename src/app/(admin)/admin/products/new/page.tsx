@@ -1,13 +1,10 @@
 import React, { Suspense } from "react";
-import { notFound } from "next/navigation";
 import AdminShell from "@/components/admin/AdminShell";
 import { ProductForm } from "@/features/products";
-import db from "@/lib/supabase/db";
 
-async function NewProjectPage() {
-  const products = await db.query.products.findMany();
-  if (!products) return notFound();
+export const dynamic = "force-dynamic"; // ← ADD THIS
 
+function NewProjectPage() { // ← Remove async, no DB call needed
   return (
     <AdminShell
       heading="Add Project"

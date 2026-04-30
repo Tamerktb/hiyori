@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+export const dynamic = "force-dynamic"; // ← ADD THIS LINE at the top
+
 
 type AdminProjectsPageProps = {
   searchParams: Promise<{
