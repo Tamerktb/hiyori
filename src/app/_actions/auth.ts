@@ -19,7 +19,7 @@ export async function signInAction({
   email: string;
   password: string;
   redirectTo?: string;
-}): Promise<{ error?: string } | never> {
+}): Promise<{ error?: string; redirectTo?: string }> {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
@@ -30,16 +30,13 @@ export async function signInAction({
     return { error: error?.message ?? "Invalid credentials" };
   }
 
-  // Check admin status
   const { data: admin } = await supabase
     .from("admins")
     .select("user_id")
     .eq("user_id", data.user.id)
     .maybeSingle();
 
-  revalidatePath("/", "layout");
-
-  if (redirectTo) redirect(redirectTo);
-  if (admin) redirect("/admin");
-  redirect("/");
+  if (redirectTo) return { redirectTo };
+  if (admin) return { redirectTo: "/admin" };
+  return { redirectTo: "/" };
 }

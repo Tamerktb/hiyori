@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { createClient } from "@/lib/supabase/client";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,7 +18,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
 import { useToast } from "@/components/ui/use-toast";
 import { PasswordInput } from "./PasswordInput";
 import { signupSchema } from "../validations";
@@ -26,7 +25,6 @@ import { signupSchema } from "../validations";
 type FormData = z.infer<typeof signupSchema>;
 
 export function SignUpForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
   const supabase = createClient();
@@ -47,24 +45,23 @@ export function SignUpForm() {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        data: {
-          name,
-        },
-      },
+      options: { data: { name } },
     });
-    const from = searchParams?.get("from");
-
-    if (data) {
-      router.push(from ? from : "/");
-    }
-
-    const unknownError = "Something went wrong, please try again.";
 
     if (error) {
+      toast({ title: "خطأ", description: error.message });
+      setIsLoading(false);
+      return;
+    }
+
+    if (data.session) {
+      toast({ title: "تم إنشاء الحساب بنجاح" });
+      window.location.href = "/";
+    } else {
       toast({
-        title: "Error",
-        description: error?.message || unknownError,
+        title: "تم إنشاء الحساب",
+        description:
+          "تم إرسال رابط تفعيل إلى بريدك الإلكتروني. افتحه لإكمال التسجيل.",
       });
       setIsLoading(false);
     }
@@ -81,9 +78,9 @@ export function SignUpForm() {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>الاسم</FormLabel>
               <FormControl>
-                <Input placeholder="How should we call you?" {...field} />
+                <Input placeholder="كيف ندعوك؟" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -95,7 +92,7 @@ export function SignUpForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>البريد الإلكتروني</FormLabel>
               <FormControl>
                 <Input placeholder="email@domain.com" {...field} />
               </FormControl>
@@ -108,7 +105,7 @@ export function SignUpForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>كلمة المرور</FormLabel>
               <FormControl>
                 <PasswordInput placeholder="**********" {...field} />
               </FormControl>
@@ -123,8 +120,7 @@ export function SignUpForm() {
               aria-hidden="true"
             />
           )}
-          Continue
-          <span className="sr-only">Continue to email verification page</span>
+          إنشاء حساب
         </Button>
       </form>
     </Form>

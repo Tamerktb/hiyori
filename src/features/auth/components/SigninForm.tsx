@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -25,7 +25,6 @@ import { PasswordInput } from "./PasswordInput";
 type FormData = z.infer<typeof authSchema>;
 
 export function SignInForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
   const [isPending, startTransition] = React.useTransition();
@@ -48,7 +47,9 @@ export function SignInForm() {
         toast({ title: "خطأ", description: result.error });
         return;
       }
-      // signInAction redirects on success — this code only runs on error.
+      if (result?.redirectTo) {
+        window.location.href = result.redirectTo;
+      }
     });
   }
 
