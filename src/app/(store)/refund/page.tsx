@@ -1,4 +1,4 @@
-ï»¿export const metadata = {
+export const metadata = {
   title: "Refund Policy | HibaStore",
 };
 
@@ -18,9 +18,9 @@ export default function RefundPage() {
 
         <h2 className="text-2xl font-bold mt-6 mb-3">Before Purchase</h2>
         <p>
-          Please carefully review your order â€” including the platform, region, and amount â€” before completing your purchase.
+          Please carefully review your order — including the platform, region, and amount — before completing your purchase.
           We are happy to answer any questions before you buy. Contact us via WhatsApp at{" "}
-          <a href="https://wa.me/962781367709" className="text-blue-600 hover:underline">+962 78 136 7709</a> if you are unsure.
+          <a href="https://wa.me/962781482011" className="text-blue-600 hover:underline">+962 78 136 7709</a> if you are unsure.
         </p>
 
         <h2 className="text-2xl font-bold mt-6 mb-3">Eligible Refund Cases</h2>
@@ -46,7 +46,7 @@ export default function RefundPage() {
         <h2 className="text-2xl font-bold mt-6 mb-3">Contact</h2>
         <p>
           For all refund inquiries, please contact us via WhatsApp at{" "}
-          <a href="https://wa.me/962781367709" className="text-blue-600 hover:underline">+962 78 136 7709</a>.
+          <a href="https://wa.me/962781482011" className="text-blue-600 hover:underline">+962 78 136 7709</a>.
         </p>
       </div>
     </div>

@@ -1,4 +1,4 @@
-﻿export default function StoreLayout({
+export default function StoreLayout({
   children,
 }: {
   children: React.ReactNode;

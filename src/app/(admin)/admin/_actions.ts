@@ -53,21 +53,42 @@ async function uploadImageIfPresent(
   return urlData.publicUrl;
 }
 
+function slugify(input: string): string {
+  return input
+    .toLowerCase()
+    .trim()
+    // Remove zero-width chars, BOM, etc.
+    .replace(/[\u200B-\u200D\uFEFF]/g, "")
+    // Replace any non-URL-safe character with a dash
+    .replace(/[^a-z0-9-]+/g, "-")
+    // Collapse multiple dashes
+    .replace(/-+/g, "-")
+    // Trim leading/trailing dashes
+    .replace(/^-+|-+$/g, "");
+}
+
 export async function createApp(formData: FormData) {
   const sb = await requireAdmin();
-  const slug = s(formData.get("slug")).toLowerCase();
   const name_ar = s(formData.get("name_ar"));
   const name_en = s(formData.get("name_en"));
-  if (!slug || !name_ar || !name_en) throw new Error("الحقول المطلوبة ناقصة");
+  if (!name_ar || !name_en) throw new Error("الحقول المطلوبة ناقصة");
+
+  // Bulletproof slug: prefer user input, fall back to English name, then Arabic.
+  let slug = slugify(s(formData.get("slug")));
+  if (!slug) slug = slugify(name_en);
+  if (!slug) slug = slugify(name_ar);
+  if (!slug) slug = `app-${Date.now()}`;
+
   const uploaded = await uploadImageIfPresent(sb, formData, slug);
   const image_url_value = uploaded || s(formData.get("image_url")) || null;
+
   const { error } = await sb.from("apps").insert({
     slug,
     name_ar,
     name_en,
     emoji: s(formData.get("emoji")) || "🎮",
     color: s(formData.get("color")) || "#f5a623",
-   note: s(formData.get("note")) || null,
+    note: s(formData.get("note")) || null,
     image_url: image_url_value,
     sort_order: n(formData.get("sort_order")),
   });
@@ -78,7 +99,9 @@ export async function createApp(formData: FormData) {
 export async function updateApp(formData: FormData) {
   const sb = await requireAdmin();
   const id = s(formData.get("id"));
-  const slug = s(formData.get("slug")).toLowerCase();
+  let slug = slugify(s(formData.get("slug")));
+  if (!slug) slug = slugify(s(formData.get("name_en")));
+  if (!slug) slug = slugify(s(formData.get("name_ar")));
   const uploaded = await uploadImageIfPresent(sb, formData, slug);
   const image_url_value =
     uploaded || s(formData.get("image_url")) || null;

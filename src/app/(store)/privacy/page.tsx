@@ -1,4 +1,4 @@
-﻿export const metadata = {
+export const metadata = {
   title: "Privacy Policy | HibaStore",
 };
 
@@ -16,7 +16,7 @@ export default function PrivacyPage() {
         </p>
         <ul className="list-disc pl-6 space-y-2">
           <li>Contact information (name, phone number, email) when you place an order or message us.</li>
-          <li>Payment-related information (we do not store full payment details — payments are processed externally).</li>
+          <li>Payment-related information (we do not store full payment details � payments are processed externally).</li>
           <li>Communication history (WhatsApp messages, Facebook messages) for order processing and support.</li>
           <li>Basic technical data (browser type, IP address) for site security and analytics.</li>
         </ul>
@@ -53,7 +53,7 @@ export default function PrivacyPage() {
         <h2 className="text-2xl font-bold mt-6 mb-3">7. Contact</h2>
         <p>
           For privacy-related questions, contact us via{" "}
-          <a href="https://wa.me/962781367709" className="text-blue-600 hover:underline">WhatsApp (+962 78 136 7709)</a>.
+          <a href="https://wa.me/962781482011" className="text-blue-600 hover:underline">WhatsApp (+962 78 136 7709)</a>.
         </p>
       </div>
     </div>

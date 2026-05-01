@@ -4,7 +4,7 @@ import { getAppBySlug, getApps } from "@/lib/apps";
 import UserMenu from "@/components/UserMenu";
 export const dynamic = "force-dynamic";
 
-const WA = "https://wa.me/962781367709";
+const WA = "https://wa.me/962781482011";
 
 export async function generateStaticParams() {
   const apps = await getApps();

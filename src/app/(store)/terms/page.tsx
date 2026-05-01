@@ -1,4 +1,4 @@
-﻿export const metadata = {
+export const metadata = {
   title: "Terms of Service | HibaStore",
 };
 
@@ -50,7 +50,7 @@ export default function TermsPage() {
         <h2 className="text-2xl font-bold mt-6 mb-3">7. Account Security</h2>
         <p>
           You are responsible for safeguarding any account information you use with our service.
-          Do not share codes publicly — once shared, they may be redeemed by others.
+          Do not share codes publicly � once shared, they may be redeemed by others.
         </p>
 
         <h2 className="text-2xl font-bold mt-6 mb-3">8. Limitation of Liability</h2>
@@ -68,7 +68,7 @@ export default function TermsPage() {
         <h2 className="text-2xl font-bold mt-6 mb-3">10. Contact</h2>
         <p>
           For questions about these terms, contact us via{" "}
-          <a href="https://wa.me/962781367709" className="text-blue-600 hover:underline">WhatsApp (+962 78 136 7709)</a>.
+          <a href="https://wa.me/962781482011" className="text-blue-600 hover:underline">WhatsApp (+962 78 136 7709)</a>.
         </p>
       </div>
     </div>

@@ -3,7 +3,7 @@ import { getApps } from "@/lib/apps";
 
 import UserMenu from "@/components/UserMenu";
 export const dynamic = "force-dynamic";
-const WA = "https://wa.me/962781367709";
+const WA = "https://wa.me/962781482011";
 
 const features = [
   { icon: "⚡", title: "تسليم فوري", desc: "شحن خلال دقائق" },
@@ -231,7 +231,7 @@ export default async function Home() {
       <section style={{ margin: "0 5% 60px", background: "linear-gradient(135deg,#0f1629,#1a1040)", border: "1px solid #ffffff15", borderRadius: 24, padding: "50px 40px", textAlign: "center" }}>
         <h2 style={{ fontSize: "clamp(22px,4vw,38px)", fontWeight: 900, marginBottom: 14 }}>📲 تواصل معنا الآن</h2>
         <p style={{ fontSize: 17, color: "#ffffff88", marginBottom: 30 }}>
-          واتساب: <strong style={{ color: "#25d366" }}>0781367709</strong>
+          واتساب: <strong style={{ color: "#25d366" }}>0781482011</strong>
           <br />طرق الدفع: زين كاش · أورنج موني · تحويل بنكي
         </p>
         <a href={WA} target="_blank" rel="noreferrer" className="glow-btn" style={{ fontSize: 20 }}>💬 ابدأ المحادثة</a>
